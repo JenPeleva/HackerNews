@@ -1,15 +1,5 @@
 <ul>
   <li *ngFor="let item of news; let i = index">
-    {{item.title}}
-    <div>{{item.url}}</div>
-    <div>{{item.score}}</div>
-    <div *ngIf="item.author">
-      <div>Author: {{item.author.id}}</div>
-      <div>Karma: {{item.author.karmaScore}}</div>
-    </div>
-    <div>{{item.timestamp*1000 | date }}</div>
-    <div>
-      <img alt="new-york" [src]="'assets/images/image' + i + '.jpg'">
-    </div>
+    <app-newsitem [item]="item" [imageSrc]="'assets/images/image' + i + '.jpg'"></app-newsitem>
   </li>
 </ul>
