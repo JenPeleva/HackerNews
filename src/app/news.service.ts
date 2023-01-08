@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Author, NewsItem} from "./app.component";
-import {catchError, forkJoin, Observable, switchMap} from "rxjs";
+import {catchError, forkJoin, Observable, of, switchMap, throwError} from "rxjs";
 import { map } from 'rxjs/operators';
-import {handleError} from "./utils";
 
 export const SERVICE_BASE_URL = "https://hacker-news.firebaseio.com";
 export const TOP_STORIES_URL = `${SERVICE_BASE_URL}/v0/topstories.json`;
@@ -19,7 +18,9 @@ export class NewsService {
 
   getNewsItemsByIds(ids:Array<number>): Observable<NewsItem[]> {
     const observables: Observable<NewsItem>[] = ids.map(itemId =>
-      this.getNewsItemById(itemId)
+      this.getNewsItemById(itemId).pipe(
+        catchError(this.handleError)
+      )
     );
    return forkJoin(observables);
   }
@@ -36,13 +37,13 @@ export class NewsService {
         }))
         ),
       ),
-      catchError(handleError)
+      catchError(this.handleError)
     )
   }
 
   getTopNewsIds(): Observable<number[]> {
     return this.http.get<number[]>(TOP_STORIES_URL)
-      .pipe(catchError(handleError));
+      .pipe(catchError(this.handleError));
   }
 
   getNewsAuthorById(authorId: string): Observable<Author> {
@@ -52,8 +53,19 @@ export class NewsService {
             id: author.id,
             karmaScore: author.karma
           }) as Author),
-        catchError(handleError)
+        catchError(this.handleError)
       );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      console.error('An error occurred:', error.error);
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, body was: `, error.error);
+    }
+
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 }
 
@@ -64,10 +76,11 @@ export interface HackerNewsItem {
   id: number;
   kids: number[];
   score: number;
-  parent: number;
-  text: string;
   time: number;
   type: string;
+  text?: string;
+  parent?: number;
+  descendants?: number;
 }
 
 export interface HackerNewsAuthor {
@@ -75,4 +88,5 @@ export interface HackerNewsAuthor {
   id: string;
   karma: number;
   submitted: number[]
+  about?: string;
 }

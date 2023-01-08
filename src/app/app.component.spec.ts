@@ -9,6 +9,7 @@ import {NewsItemComponent} from "./components/newsitem/news-item.component";
 import {AuthorComponent} from "./components/author/author.component";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {faHeart, faUser} from '@fortawesome/free-solid-svg-icons';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 const NEWS_ARRAY: Array<NewsItem> = [
   {
@@ -45,8 +46,7 @@ fdescribe('AppComponent', () => {
         NewsItemComponent,
         AuthorComponent
       ],
-      imports: [FontAwesomeModule],
-      providers: [HttpClient, HttpHandler]
+      imports: [FontAwesomeModule, HttpClientTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);

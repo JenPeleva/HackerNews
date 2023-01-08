@@ -1,36 +1,9 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {NewsService, SERVICE_BASE_URL, TOP_STORIES_URL} from './news.service';
+import {HttpClient} from '@angular/common/http';
+import {AUTHOR_BY_ID_URL, NEWS_ITEM_BY_ID_URL, NewsService, SERVICE_BASE_URL, TOP_STORIES_URL} from './news.service';
 import {NewsItem} from "./app.component";
-import {of} from "rxjs";
-import {TestBed} from "@angular/core/testing";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-
-const AUTHOR_ID = "amalgamated_inc";
-const AUTHOR = {
-  id: AUTHOR_ID,
-  karmaScore: 103
-};
-const NEWS_ITEMS: NewsItem[] = [
-  {
-    title: "Show HN: Freelancer Salary, calculator to match full time salaries",
-    score: 15,
-    url: "https://freelancersalary.com/",
-    author: AUTHOR,
-    timestamp: 1672774689,
-  },
-  {
-    title: "Man wrongly jailed by facial recognition, lawyer claims",
-    score: 9,
-    url: "https://www.theregister.com/2023/01/03/facial_recognition_jail/",
-    author: {
-      id: "raybb",
-      karmaScore: 4276
-    },
-    timestamp: 1672842515,
-  }
-]
-
-const NEWS_ITEMS_IDS = [34236831, 34245841];
+import {fakeAsync, TestBed} from "@angular/core/testing";
+import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
+import {HACKER_NEWS_AUTHORS, HACKER_NEWS_MAP, NEWS_ITEMS, NEWS_ITEMS_IDS} from "./test-items";
 
 fdescribe('NewsService', () => {
   let httpClient: HttpClient;
@@ -40,7 +13,7 @@ fdescribe('NewsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
     httpClient = TestBed.inject(HttpClient);
@@ -56,15 +29,55 @@ fdescribe('NewsService', () => {
     expect(newsService).toBeTruthy();
   });
 
-  fit('can test HttpClient.get', () => {
-    newsService.getTopNewsIds().subscribe(data =>
-    expect(data).toEqual(NEWS_ITEMS_IDS))
+  it('can test HttpClient.get', () => {
+    const ids = [...NEWS_ITEMS_IDS];
+
+    newsService.getTopNewsIds().subscribe((data) => {
+      expect(data).toEqual(ids)
+      }
+    )
 
     const req = httpTestingController.expectOne(TOP_STORIES_URL);
     expect(req.request.method).toEqual('GET');
 
-    req.flush(NEWS_ITEMS_IDS);
+    req.flush(ids);
 
     httpTestingController.verify();
   })
+
+  it('getNewsItemsByIds() returns an array of NewsItems', fakeAsync(() => {
+    const hackerNewsItems = [...NEWS_ITEMS_IDS];
+    const newsItems = [...NEWS_ITEMS];
+    const newsItemsIds = [...NEWS_ITEMS_IDS];
+    const hackerNewsAuthors = [...HACKER_NEWS_AUTHORS];
+
+    newsService.getNewsItemsByIds(hackerNewsItems).subscribe(data =>{
+        expect(data).toBeDefined();
+        data.forEach((item: NewsItem, index) => {
+          expect(item).toEqual(newsItems[index]);
+        })
+      }
+    )
+
+    const testNewsRequests: TestRequest[] = [];
+
+    newsItemsIds.forEach((id: number, index: number) => {
+      testNewsRequests.push(httpTestingController.expectOne(NEWS_ITEM_BY_ID_URL(id)));
+
+      const newsItemReq = testNewsRequests[index];
+      expect(newsItemReq.request.method).toEqual('GET');
+      newsItemReq.flush(HACKER_NEWS_MAP.get(id) as any);
+    });
+
+    const testAuthorRequests: TestRequest[] = [];
+
+    newsItemsIds.forEach((id: number, index: number) => {
+      testAuthorRequests.push(httpTestingController.expectOne(AUTHOR_BY_ID_URL(hackerNewsAuthors[index].id)))
+
+      const authorReq = testAuthorRequests[index];
+      expect(authorReq.request.method).toEqual('GET');
+      console.log(HACKER_NEWS_AUTHORS[index]);
+      authorReq.flush(HACKER_NEWS_AUTHORS[index] as any);
+    })
+  }))
 });
