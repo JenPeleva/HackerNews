@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Author, NewsItem} from "./app.component";
-import {catchError, forkJoin, Observable, of, switchMap, throwError} from "rxjs";
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Author, NewsItem} from './app.component';
+import {catchError, forkJoin, Observable, of, switchMap, throwError} from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export const SERVICE_BASE_URL = "https://hacker-news.firebaseio.com";
+export const SERVICE_BASE_URL = 'https://hacker-news.firebaseio.com';
 export const TOP_STORIES_URL = `${SERVICE_BASE_URL}/v0/topstories.json`;
 export const NEWS_ITEM_BY_ID_URL = (id: number) => `${SERVICE_BASE_URL}/v0/item/${id}.json`;
 export const AUTHOR_BY_ID_URL = (id: string) => `${SERVICE_BASE_URL}/v0/user/${id}.json`;
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class NewsService {
 

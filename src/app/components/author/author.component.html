@@ -1,9 +1,9 @@
 <ul *ngIf="author" class="author">
-  <li class="author__info" data-test="authorId">
+  <li class="author__info" data-test="authorId" tabindex="0">
     <fa-icon class="author__icon" [icon]="authorIcon"></fa-icon>
     {{author.id}}
   </li>
-  <li class="author__info" data-test="authorKarma">
+  <li class="author__info" data-test="authorKarma" tabindex="0">
     <fa-icon class="author__icon" [icon]="karmaIcon"></fa-icon>
     Karma {{author.karmaScore}}
   </li>

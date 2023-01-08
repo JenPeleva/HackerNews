@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {NewsService} from "./news.service";
-import {Observable, switchMap} from "rxjs";
-import {map} from "rxjs/operators";
+import {NewsService} from './news.service';
+import {Observable, switchMap} from 'rxjs';
+import {map} from 'rxjs/operators';
 import { Helper } from './helper';
 
 @Component({
@@ -10,7 +10,7 @@ import { Helper } from './helper';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent{
+export class AppComponent {
   imgSrc = 'assets/images/image';
   news: Observable<NewsItem[]> = this.newsService.getTopNewsIds().pipe(
     map(result => {
@@ -18,7 +18,7 @@ export class AppComponent{
       return result.slice(0, 10);
     }),
     switchMap(x => this.newsService.getNewsItemsByIds(x).pipe(
-      map( Helper.sortAsc())
+      map(Helper.sortAsc())
     ))
   );
 

@@ -2,11 +2,11 @@
     <a [href]="item.url" class="news-item__link">
       <img alt="new-york" width="510" height="340" loading="lazy" [src]="imageSrc" [attr.srcSet]="srcSet" sizes="(max-width: 750px) 510px, 350px" class="news-item__image" >
       <span class="news-item__details">
-        <span class="news-item__score">
+        <span class="news-item__score" tabindex="0">
           {{item.score}} points
           &#47;
         </span>
-        <span class="news-item__date"> {{item.timestamp*1000 | date }}</span>
+        <span class="news-item__date" tabindex="0"> {{item.timestamp*1000 | date }}</span>
       </span>
     </a>
 

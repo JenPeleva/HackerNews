@@ -1,4 +1,4 @@
-import { NewsItem } from "./app.component";
+import { NewsItem } from './app.component';
 
 export class Helper {
 
