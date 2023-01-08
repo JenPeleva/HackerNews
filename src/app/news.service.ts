@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Author, NewsItem} from "./app.component";
 import {catchError, forkJoin, Observable, switchMap} from "rxjs";
 import { map } from 'rxjs/operators';
@@ -25,7 +25,7 @@ export class NewsService {
   }
 
   getNewsItemById(id: number): Observable<NewsItem> {
-    return this.http.get<any>(NEWS_ITEM_BY_ID_URL(id)).pipe(
+    return this.http.get<HackerNewsItem>(NEWS_ITEM_BY_ID_URL(id)).pipe(
       switchMap(result => this.getNewsAuthorById(result.by).pipe(
         map((newsAuthor: Author)  => ({
           title: result.title,
@@ -46,7 +46,7 @@ export class NewsService {
   }
 
   getNewsAuthorById(authorId: string): Observable<Author> {
-      return this.http.get<any>(AUTHOR_BY_ID_URL(authorId)).pipe(
+      return this.http.get<HackerNewsAuthor>(AUTHOR_BY_ID_URL(authorId)).pipe(
         map(author =>
           ({
             id: author.id,
@@ -55,4 +55,24 @@ export class NewsService {
         catchError(handleError)
       );
   }
+}
+
+export interface HackerNewsItem {
+  title: string;
+  url: string;
+  by: string;
+  id: number;
+  kids: number[];
+  score: number;
+  parent: number;
+  text: string;
+  time: number;
+  type: string;
+}
+
+export interface HackerNewsAuthor {
+  created: number;
+  id: string;
+  karma: number;
+  submitted: number[]
 }

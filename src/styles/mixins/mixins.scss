@@ -1,0 +1,47 @@
+@use "sass:math";
+@use "sass:map";
+
+@use "../settings/row";
+@use "../settings/responsive";
+
+/* Generate spacing classes*/
+@mixin generate-spacing-classes($property, $spacing-list, $starts-with) {
+  @each $spacing, $value in $spacing-list {
+    .-#{$starts-with}-#{$spacing} {
+      #{$property}: $value !important;
+    }
+  }
+}
+
+/* Generate column classes*/
+@mixin generate-columns($columns, $breakpoint: null) {
+  @if ($breakpoint) {
+    $breakpoint: $breakpoint + "-";
+  }
+
+  @for $i from 1 through $columns {
+    &.-col-#{$breakpoint}#{$i} {
+      flex: 0 0 math.percentage(math.div($i, $columns));
+      max-width: math.percentage(math.div($i, $columns));
+    }
+  }
+}
+
+/* Generate grid system classes */
+
+@mixin generate-grid-system() {
+
+  @each $key, $value in responsive.$breakpoints {
+    @if (map.has-key(responsive.$container-widths, $key)) {
+      @media (min-width: $value) {
+        .container {
+          width: map.get(responsive.$container-widths, $key);
+        }
+
+        .row__col {
+          @include generate-columns(row.$columns, $key);
+        }
+      }
+    }
+  }
+}

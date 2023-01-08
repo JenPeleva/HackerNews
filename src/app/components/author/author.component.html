@@ -1,4 +1,10 @@
-<div *ngIf="author">
-  <div>Author: {{author.id}}</div>
-  <div>Karma: {{author.karmaScore}}</div>
-</div>
+<ul *ngIf="author" class="author">
+  <li class="author__info" data-test="authorId">
+    <fa-icon class="author__icon" [icon]="authorIcon"></fa-icon>
+    {{author.id}}
+  </li>
+  <li class="author__info" data-test="authorKarma">
+    <fa-icon class="author__icon" [icon]="karmaIcon"></fa-icon>
+    Karma {{author.karmaScore}}
+  </li>
+</ul>

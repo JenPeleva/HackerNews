@@ -1,0 +1,19 @@
+<div class="news-item">
+    <a [href]="item.url" class="news-item__link">
+      <img alt="new-york" width="510" height="340" loading="lazy" [src]="imageSrc" [attr.srcSet]="srcSet" sizes="(max-width: 750px) 510px, 350px" class="news-item__image" >
+      <span class="news-item__details">
+        <span class="news-item__score">
+          {{item.score}} points
+          &#47;
+        </span>
+        <span class="news-item__date"> {{item.timestamp*1000 | date }}</span>
+      </span>
+    </a>
+
+    <h2 class="news-item__title">
+      <a [href]="item.url">{{item.title}}</a>
+    </h2>
+    <app-author [author]="item.author"></app-author>
+</div>
+
+

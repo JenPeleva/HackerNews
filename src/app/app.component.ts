@@ -1,27 +1,31 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {NewsService} from "./news.service";
-import {shuffle} from "./utils";
+import {Observable, switchMap} from "rxjs";
+import {map} from "rxjs/operators";
+import { Helper } from './helper';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit{
-  news: NewsItem[] = [];
+export class AppComponent{
+  imgSrc = 'assets/images/image';
+  news: Observable<NewsItem[]> = this.newsService.getTopNewsIds().pipe(
+    map(result => {
+      Helper.shuffle(result);
+      return result.slice(0, 10);
+    }),
+    switchMap(x => this.newsService.getNewsItemsByIds(x).pipe(
+      map( Helper.sortAsc())
+    ))
+  );
 
   constructor(private newsService: NewsService) {}
 
-  ngOnInit() {
-    this.newsService.getTopNewsIds().subscribe((result: number[]) => {
-        shuffle(result);
-        const randomNewsIds = result.slice(0, 10);
-
-        this.newsService.getNewsItemsByIds(randomNewsIds).subscribe((items) => {
-          this.news = items.sort((a, b) => a.score - b.score);
-        })
-    })
-
+  getSrcSet(index: number): string {
+    return `${this.imgSrc}${index}.jpg 510w, ${this.imgSrc}-lg-${index}.jpg 350w`;
   }
 }
 

@@ -1,0 +1,62 @@
+@use "../../../styles/settings/colors";
+@use "../../../styles/settings/spacing";
+
+$border-radius: 7px;
+
+.news-item {
+
+  &__link {
+    position: relative;
+    display: inline-block;
+
+    &:after{
+      position: absolute;
+      content: "";
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, transparent 50%, black 100%);
+      border-radius: $border-radius;
+    }
+
+    &:hover:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 3;
+      background: colors.$base-invert;
+      opacity: 0.1;
+    }
+
+  }
+
+  &__details {
+    display: flex;
+    position: absolute;
+    bottom: map-get(spacing.$spacing-list, "md");
+    left: map-get(spacing.$spacing-list, "md");
+    z-index: 1;
+  }
+
+  &__date {
+    color: colors.$light-grey;
+  }
+
+  &__score {
+    color: colors.$base-invert;
+    margin-right: map-get(spacing.$spacing-list, "xs");;
+  }
+
+  &__image {
+    border-radius: $border-radius;
+  }
+
+  &__title {
+    margin-top: map-get(spacing.$spacing-list, "md");
+  }
+}
+
