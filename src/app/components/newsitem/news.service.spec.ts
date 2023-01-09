@@ -5,11 +5,10 @@ import {fakeAsync, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
 import {HACKER_NEWS_AUTHORS, HACKER_NEWS_MAP, NEWS_ITEMS, NEWS_ITEMS_IDS} from './test-items';
 
-fdescribe('NewsService', () => {
+describe('NewsService', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   let newsService: NewsService;
-  let baseUrl = SERVICE_BASE_URL;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
