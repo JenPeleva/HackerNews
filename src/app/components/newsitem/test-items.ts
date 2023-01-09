@@ -1,5 +1,5 @@
 import {HackerNewsAuthor, HackerNewsItem} from './news.service';
-import {NewsItem} from "./app.component";
+import {NewsItem} from "../../app.component";
 
 export const NEWS_ITEMS_IDS = [34236831, 34245841];
 

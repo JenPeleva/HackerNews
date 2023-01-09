@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Author, NewsItem} from './app.component';
+import {Author, NewsItem} from '../../app.component';
 import {catchError, forkJoin, Observable, of, switchMap, throwError} from 'rxjs';
 import { map } from 'rxjs/operators';
 

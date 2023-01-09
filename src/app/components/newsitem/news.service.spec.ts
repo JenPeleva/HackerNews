@@ -1,9 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {AUTHOR_BY_ID_URL, NEWS_ITEM_BY_ID_URL, NewsService, SERVICE_BASE_URL, TOP_STORIES_URL} from './news.service';
-import {NewsItem} from "./app.component";
-import {fakeAsync, TestBed} from "@angular/core/testing";
-import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
-import {HACKER_NEWS_AUTHORS, HACKER_NEWS_MAP, NEWS_ITEMS, NEWS_ITEMS_IDS} from "./test-items";
+import {NewsItem} from '../../app.component';
+import {fakeAsync, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController, TestRequest} from '@angular/common/http/testing';
+import {HACKER_NEWS_AUTHORS, HACKER_NEWS_MAP, NEWS_ITEMS, NEWS_ITEMS_IDS} from './test-items';
 
 fdescribe('NewsService', () => {
   let httpClient: HttpClient;
