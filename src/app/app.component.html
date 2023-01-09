@@ -1,8 +1,11 @@
-<main class="container">
-  <h1 class="-text-center -mb-xlg" tabindex="0">Hacker news</h1>
+<main class="container" *ngIf="news| async as newsItems; else loading">
+  <h1  class="-text-center -mb-xlg" tabindex="0">Hacker news</h1>
   <ul class="-list-style-none row">
-    <li *ngFor="let item of news | async; let i = index" class="row__col -col-12 -col-sm-6 -col-lg-4 -mb-xlg">
+    <li *ngFor="let item of newsItems; let i = index" class="row__col -col-12 -col-sm-6 -col-lg-4 -mb-xlg">
       <app-news-item [item]="item" [imageSrc]="imgSrc + i + '.jpg'" [srcSet]="getSrcSet(i)"></app-news-item>
     </li>
   </ul>
 </main>
+<ng-template #loading>
+  <div class="loader"></div>
+</ng-template>

@@ -4,6 +4,7 @@
 @use "styles/settings/row";
 @use "styles/settings/spacing";
 @use "styles/settings/typography";
+@use "styles/settings/loader";
 @use "styles/mixins/mixins";
 
 /* Utility */
@@ -88,3 +89,22 @@ h2 {
 
 @include mixins.generate-grid-system();
 
+/* Loader */
+
+.loader {
+  position: fixed;
+  top: calc(50% - #{loader.$loader-width/2});
+  left: calc(50% - #{loader.$loader-width/2});
+  border: 3px solid colors.$lightest-grey;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+  border-top: 3px solid colors.$grey;
+  border-radius: 50%;
+  width: loader.$loader-width;
+  height: loader.$loader-width;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
